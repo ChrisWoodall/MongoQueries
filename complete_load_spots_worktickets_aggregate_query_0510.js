@@ -89,8 +89,8 @@ db.jobqueue.aggregate(
 			 	jobtotal: "$_id.jobtotal", 
 			    spot_start: "$_id.spot_start",
 			    spot_finish: "$_id.spot_finish",
-			    spot_duration: "$_id.spot_duration",
 			    granularity: "$_id.granularity",
+			    spot_duration: "$_id.spot_duration",
 			    spot_total: 1,
 			
 			
@@ -120,10 +120,6 @@ db.jobqueue.aggregate(
 			_id: {clientid: "$clientid", 
 			  	brandid: "$brandid", 
 			  	workticketid: "$workticketid", 
-			  	spot_start:  "$spot_start",
-				spot_finish: "$spot_finish",
-				spot_duration: "$spot_duration",
-				spot_total: "$spot_total"
 			  	},
 			jobcount: {"$sum": 1},
 			workticket_scheduled: {"$min": "$jobstartat"},
@@ -133,6 +129,9 @@ db.jobqueue.aggregate(
 			waiting: {"$sum": "$jobwaiting"},
 			total: {"$sum": "$jobtotal"},
 			jobs: {"$push":  "$jobtype"},
+			spot_start: {"$min": "$spot_start" },
+			spot_finish: {"$max": "$spot_finish"},
+			spot_total: {"$max": "$spot_total" },
 			granularity: {"$addToSet": "$granularity"}
 			}
 			
@@ -173,7 +172,6 @@ db.jobqueue.aggregate(
 			    spot_finish: "$spot_finish",
 			    spot_granularity_0: {$arrayElemAt: ["$granularity", 0]},
 			    spot_granularity_1: {$arrayElemAt: ["$granularity", 1]},
-			    spot_duration: 1,
 			    spot_total: "$spot_total"
 			}
 		},
@@ -215,7 +213,6 @@ db.jobqueue.aggregate(
 			    second_last_job: 1,
 			    spot_start: 1,
 			    spot_finish: 1,
-			    spot_duration: 1,
 			    spot_granularity_1: 1,
 			    spot_total: 1
 			}

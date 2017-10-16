@@ -3,7 +3,7 @@ db.jobqueue.aggregate(
 	[
 		{
 			'$match': {
-			    'jobstartat': {"$lt": ISODate('2017-09-12'), "$gt": ISODate('2017-09-09')},
+			    'jobstartat': {"$lt": end, "$gt": start},
 			    'jobstatus': "DONE"
 			}
 		},
@@ -30,14 +30,13 @@ db.jobqueue.aggregate(
 			'$unwind': {
 			    'path' : "$spotfile_values",
 			    
-			    'preserveNullAndEmptyArrays' : true 
+			    'preserveNullAndEmptyArrays' : True 
 			}
 		},
 		{
 			'$unwind': {
 			    'path' : "$spotfile_values",
-			    'preserveNullAndEmptyArrays' : true // optional
-			}
+			    'preserveNullAndEmptyArrays' : True 			}
 		},
 		{
 			'$group': {
@@ -63,7 +62,7 @@ db.jobqueue.aggregate(
 		},
 		{
 			'$project': {
-			      '_id':false,
+			      '_id':False,
 			    'clientid': "$_id.clientid",
 			    'brandid': "$_id.brandid",
 			    'workticketid': "$_id.workticketid", 
@@ -91,7 +90,7 @@ db.jobqueue.aggregate(
 		{
 			'$unwind': {
 			    'path' : "$workticketid",
-			    'preserveNullAndEmptyArrays': false
+			    'preserveNullAndEmptyArrays': False
 			}
 		},
 		{
@@ -162,7 +161,7 @@ db.jobqueue.aggregate(
 		},
 		{
 			'$project': {
-			    '_id': false,
+			    '_id': False,
 			    'workticketid': 1,
 			    'clientid': 1,
 			    'brandid': 1,
